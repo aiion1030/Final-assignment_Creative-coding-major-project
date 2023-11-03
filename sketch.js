@@ -3,49 +3,62 @@ let blocks = [];
 function setup() {
   createCanvas(windowWidth, windowHeight);
   background(229, 228, 240);
+  
 
   let yPosArray = calculatePositions([10, 50, 120, 150, 220, 250, 280, 340, 440], windowHeight);
   let xPosArray = calculatePositions([10, 30, 70, 140, 300, 330, 420, 440, 480, 500], windowWidth);
-
+  
   horizontalStreets(yPosArray);
   verticalStreets(xPosArray);
-
-  
-  blocks.push({ x: windowWidth * 0.1, y: windowHeight * 0.16, w: windowWidth * 0.06, h: windowHeight * 0.06, c: color(0, 0, 255), isHovered: false });
-  blocks.push({ x: windowWidth * 0.1, y: windowHeight * 0.7, w: windowWidth * 0.08, h: windowHeight * 0.08, c: color(0, 0, 255), isHovered: false });
-  blocks.push({ x: windowWidth * 0.32, y: windowHeight * 0.52, w: windowWidth * 0.06, h: windowHeight * 0.1, c: color(0, 0, 255), isHovered: false });
-  blocks.push({ x: windowWidth * 0.76, y: windowHeight * 0.32, w: windowWidth * 0.1, h: windowHeight * 0.2, c: color(0, 0, 255), isHovered: false });
-  blocks.push({ x: windowWidth * 0.82, y: windowHeight * 0.7, w: windowWidth * 0.08, h: windowHeight * 0.08, c: color(0, 0, 255), isHovered: false });
   
  
-  blocks.push({ x: windowWidth * 0.16, y: windowHeight * 0.04, w: windowWidth * 0.04, h: windowHeight * 0.18, c: color(255, 0, 0), isHovered: false });
-  blocks.push({ x: windowWidth * 0.26, y: windowHeight * 0.04, w: windowWidth * 0.08, h: windowHeight * 0.12, c: color(255, 0, 0), isHovered: false });
-  blocks.push({ x: windowWidth * 0.16, y: windowHeight * 0.54, w: windowWidth * 0.12, h: windowHeight * 0.08, c: color(255, 0, 0), isHovered: false });
-  blocks.push({ x: windowWidth * 0.58, y: windowHeight * 0.4, w: windowWidth * 0.12, h: windowHeight * 0.1, c: color(255, 0, 0), isHovered: false });
-  blocks.push({ x: windowWidth * 0.68, y: windowHeight * 0.6, w: windowWidth * 0.1, h: windowHeight * 0.14, c: color(255, 0, 0), isHovered: false });
-
-
+  createBlock(windowWidth * 0.1, windowHeight * 0.16, windowWidth * 0.06, windowHeight * 0.06, color(0, 0, 255));
+  createBlock(windowWidth * 0.1, windowHeight * 0.7, windowWidth * 0.08, windowHeight * 0.08, color(0, 0, 255));
+  createBlock(windowWidth * 0.32, windowHeight * 0.52, windowWidth * 0.06, windowHeight * 0.1, color(0, 0, 255));
+  createBlock(windowWidth * 0.76, windowHeight * 0.32, windowWidth * 0.1, windowHeight * 0.2, color(0, 0, 255));
+  createBlock(windowWidth * 0.82, windowHeight * 0.7, windowWidth * 0.08, windowHeight * 0.08, color(0, 0, 255));
   
-  blocks.push({ x: windowWidth * 0.28, y: windowHeight * 0.08, w: windowWidth * 0.06, h: windowHeight * 0.06, c: color(169), isHovered: false });
-  blocks.push({ x: windowWidth * 0.46, y: windowHeight * 0.22, w: windowWidth * 0.1, h: windowHeight * 0.14, c: color(169), isHovered: false });
-  blocks.push({ x: windowWidth * 0.46, y: windowHeight * 0.74, w: windowWidth * 0.06, h: windowHeight * 0.1, c: color(169), isHovered: false });
-  blocks.push({ x: windowWidth * 0.74, y: windowHeight * 0.62, w: windowWidth * 0.08, h: windowHeight * 0.04, c: color(169), isHovered: false });
-  blocks.push({ x: windowWidth * 0.8, y: windowHeight * 0.04, w: windowWidth * 0.1, h: windowHeight * 0.06, c: color(169), isHovered: false });
-
-
+ 
+  createBlock(windowWidth * 0.16, windowHeight * 0.04, windowWidth * 0.04, windowHeight * 0.18, color(255, 0, 0));
+  createBlock(windowWidth * 0.26, windowHeight * 0.04, windowWidth * 0.08, windowHeight * 0.12, color(255, 0, 0));
+  createBlock(windowWidth * 0.16, windowHeight * 0.54, windowWidth * 0.12, windowHeight * 0.08, color(255, 0, 0));
+  createBlock(windowWidth * 0.58, windowHeight * 0.4, windowWidth * 0.12, windowHeight * 0.1, color(255, 0, 0));
+  createBlock(windowWidth * 0.68, windowHeight * 0.6, windowWidth * 0.1, windowHeight * 0.14, color(255, 0, 0));
+  
+  
+  createBlock(windowWidth * 0.28, windowHeight * 0.08, windowWidth * 0.06, windowHeight * 0.06, color(169));
+  createBlock(windowWidth * 0.46, windowHeight * 0.22, windowWidth * 0.1, windowHeight * 0.14, color(169));
+  createBlock(windowWidth * 0.46, windowHeight * 0.74, windowWidth * 0.06, windowHeight * 0.1, color(169));
+  createBlock(windowWidth * 0.74, windowHeight * 0.62, windowWidth * 0.08, windowHeight * 0.04, color(169));
+  createBlock(windowWidth * 0.8, windowHeight * 0.04, windowWidth * 0.1, windowHeight * 0.06, color(169));
 }
 
 function calculatePositions(positionArray, canvasSize) {
+  
   let adjustedPositions = [];
   for (let pos of positionArray) {
     adjustedPositions.push((pos / 500) * canvasSize);
   }
   return adjustedPositions;
+
+  fill(0)
+  textSize(20)
+  textAlign(CENTER)
+  text("click the rectangle", windowWidth / 2,30);
 }
 
 function createBlock(x, y, w, h, c) {
-  fill(c);
-  rect(x, y, w, h);
+  let block = {
+    x: x,
+    y: y,
+    w: w,
+    h: h,
+    color: c,
+    isFalling: false,
+    fallStartY: y,
+    fallSpeed: 5, 
+  };
+  blocks.push(block);
 }
 
 function horizontalStreets(yPosArray) {
@@ -82,18 +95,16 @@ function colourMap(num) {
 
 function draw() {
   for (let block of blocks) {
-    if (block.isHovered) {
-      
-      block.y += 5; 
-    }
-
-    fill(block.c);
+    fill(block.color);
     rect(block.x, block.y, block.w, block.h);
+
+    if (block.isFalling && block.y < windowHeight) {
+      block.y += block.fallSpeed; // 
+    }
   }
 }
 
-function mouseMoved() {
-  
+function mouseClicked() {
   for (let block of blocks) {
     if (
       mouseX >= block.x &&
@@ -101,16 +112,12 @@ function mouseMoved() {
       mouseY >= block.y &&
       mouseY <= block.y + block.h
     ) {
-      block.isHovered = true;
-    } else {
-      block.isHovered = false;
+      block.isFalling = true;
     }
   }
 }
 
-
-
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
-  setup();
+  setup();  
 }
