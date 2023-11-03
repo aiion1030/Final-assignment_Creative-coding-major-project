@@ -41,10 +41,7 @@ function calculatePositions(positionArray, canvasSize) {
   }
   return adjustedPositions;
 
-  fill(0)
-  textSize(20)
-  textAlign(CENTER)
-  text("click the rectangle", windowWidth / 2,30);
+  
 }
 
 function createBlock(x, y, w, h, c) {
@@ -102,6 +99,10 @@ function draw() {
       block.y += block.fallSpeed; // 
     }
   }
+  fill(255)
+  textSize(50)
+  textAlign(CENTER)
+  text("click the rectangle", windowWidth / 2,130);
 }
 
 function mouseClicked() {
